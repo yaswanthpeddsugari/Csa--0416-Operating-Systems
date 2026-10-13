@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main() {
+    int n, i, time = 0, completed = 0;
+    int at[20], bt[20], rt[20], p[20];
+    int wt[20], tat[20], ct[20];
+    int highest, min_priority;
+    float avgwt = 0, avgtat = 0;
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter arrival time, burst time and priority for P%d: ", i + 1);
+        scanf("%d %d %d", &at[i], &bt[i], &p[i]);
+        rt[i] = bt[i];
+    }
+
+    while (completed < n) {
+        highest = -1;
+        min_priority = 9999;
+
+        for (i = 0; i < n; i++) {
+            if (at[i] <= time && rt[i] > 0 &&
+                p[i] < min_priority) {
+                min_priority = p[i];
+                highest = i;
+            }
+        }
+
+        if (highest == -1) {
+            time++;
+            continue;
+        }
+
+        rt[highest]--;
+        time++;
+
+        if (rt[highest] == 0) {
+            ct[highest] = time;
+            completed++;
+        }
+    }
+
+    printf("\nPID\tAT\tBT\tPriority\tWT\tTAT\n");
+
+    for (i = 0; i < n; i++) {
+        tat[i] = ct[i] - at[i];
+        wt[i] = tat[i] - bt[i];
+
+        avgwt += wt[i];
+        avgtat += tat[i];
+
+        printf("P%d\t%d\t%d\t%d\t\t%d\t%d\n",
+               i + 1, at[i], bt[i], p[i], wt[i], tat[i]);
+    }
+
+    printf("\nAverage Waiting Time = %.2f", avgwt / n);
+    printf("\nAverage Turnaround Time = %.2f\n", avgtat / n);
+
+    return 0;
+}
