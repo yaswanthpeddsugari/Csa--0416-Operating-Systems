@@ -1,0 +1,94 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Employee {
+    int id;
+    char name[30];
+    float salary;
+};
+
+int main() {
+    FILE *fp;
+    struct Employee emp;
+    int choice, recordNo;
+
+    fp = fopen("employee.dat", "wb+");
+
+    if (fp == NULL) {
+        printf("File opening failed!\n");
+        return 1;
+    }
+
+    while (1) {
+        printf("\n--- Employee Record System ---\n");
+        printf("1. Add Employee\n");
+        printf("2. Display Employee\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter record number (starting from 1): ");
+                scanf("%d", &recordNo);
+
+                if (recordNo < 1) {
+                    printf("Invalid record number!\n");
+                    break;
+                }
+
+                printf("Enter Employee ID: ");
+                scanf("%d", &emp.id);
+
+                printf("Enter Employee Name: ");
+                scanf("%29s", emp.name);
+
+                printf("Enter Employee Salary: ");
+                scanf("%f", &emp.salary);
+
+                fseek(fp, (long)(recordNo - 1) * sizeof(emp),
+                      SEEK_SET);
+
+                if (fwrite(&emp, sizeof(emp), 1, fp) == 1) {
+                    fflush(fp);
+                    printf("Employee record saved successfully.\n");
+                } else {
+                    printf("Error saving employee record.\n");
+                }
+                break;
+
+            case 2:
+                printf("Enter record number to display: ");
+                scanf("%d", &recordNo);
+
+                if (recordNo < 1) {
+                    printf("Invalid record number!\n");
+                    break;
+                }
+
+                fseek(fp, (long)(recordNo - 1) * sizeof(emp),
+                      SEEK_SET);
+
+                if (fread(&emp, sizeof(emp), 1, fp) == 1) {
+                    printf("\n--- Employee Details ---\n");
+                    printf("Employee ID: %d\n", emp.id);
+                    printf("Employee Name: %s\n", emp.name);
+                    printf("Employee Salary: %.2f\n", emp.salary);
+                } else {
+                    printf("Record not found!\n");
+                }
+                break;
+
+            case 3:
+                fclose(fp);
+                printf("Program terminated.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
