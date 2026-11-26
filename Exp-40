@@ -1,0 +1,26 @@
+# Display file permissions
+ls -l
+
+# Give read permission
+chmod u+r file.txt
+
+# Give write permission
+chmod u+w file.txt
+
+# Give execute permission
+chmod u+x file.txt
+
+# Remove write permission
+chmod u-w file.txt
+
+# Give all permissions to owner
+chmod 700 file.txt
+
+# Give read and write permissions to everyone
+chmod 666 file.txt
+
+# Change file owner
+chown user file.txt
+
+# Change group
+chgrp group file.txt
