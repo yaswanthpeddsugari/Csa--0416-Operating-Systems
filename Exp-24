@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main()
+{
+    int fd;
+    char data[100];
+
+    fd=open("sample.txt",O_CREAT|O_RDWR,0644);
+
+    if(fd<0)
+    {
+        perror("File error");
+        return 1;
+    }
+
+    write(fd,"Hello UNIX System Calls",23);
+
+    lseek(fd,0,SEEK_SET);
+
+    read(fd,data,23);
+    data[23]='\0';
+
+    printf("File Content: %s\n",data);
+
+    close(fd);
+
+    return 0;
+}
