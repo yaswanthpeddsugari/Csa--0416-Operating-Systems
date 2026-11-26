@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main()
+{
+    int index[20],n,i,block;
+
+    printf("Enter number of blocks: ");
+    scanf("%d",&n);
+
+    printf("Enter index block number: ");
+    scanf("%d",&block);
+
+    printf("Enter disk block numbers:\n");
+
+    for(i=0;i<n;i++)
+        scanf("%d",&index[i]);
+
+    printf("\nIndex Block: %d\n",block);
+    printf("File Allocation:\n");
+
+    for(i=0;i<n;i++)
+        printf("Index[%d] -> Block %d\n",
+               i,index[i]);
+
+    return 0;
+}
